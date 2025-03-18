@@ -1,6 +1,6 @@
 # Generative Adversarial Network (GAN)
 
-Exploring the GAN achitecture on non-image 
+Exploring the GAN achitecture on non-image data
 
 ## Prerequisites
 

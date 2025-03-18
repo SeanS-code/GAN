@@ -1,3 +1,4 @@
 .venv
-
-README_info.md
+docs
+gan.egg-info
+__pycache__
