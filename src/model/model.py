@@ -1,8 +1,17 @@
+import os
+from dotenv import load_dotenv
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
 
 import numpy as np
+import pandas as pd
+
+from sklearn.preprocessing import MinMaxScaler
+
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Hyperparameters
 latent_dim = 32          # Size of the noise vector
@@ -10,6 +19,10 @@ data_dim = 10            # Number of features in your data
 batch_size = 64
 num_epochs = 5000
 lr = 0.0002
+
+# Data Location
+load_dotenv()
+file_path = os.getenv('CSV_FILE_PATH')
 
 # Generator
 class Generator(nn.Module):
@@ -43,18 +56,35 @@ class Discriminator(nn.Module):
         return self.model(data)
 
 def gan_model():
-    # Initialize
+    # Data
+    df = pd.read_csv(file_path)
+
+    # Drop 'time' column
+    df = df.drop(columns=['time'])
+
+    # Handle NaN values (choose one strategy)
+    df_filled = df.fillna(0) 
+
+    # Normalize between -1 and 1
+    scaler = MinMaxScaler(feature_range=(-1, 1))
+    scaled_data = scaler.fit_transform(df_filled)
+
+    # Convert to Torch Tensor
+    real_data = torch.tensor(scaled_data, dtype=torch.float32)
+
+    # Set data_dim
+    data_dim = real_data.shape[1]
+
+    print(f"Data Dimension: {data_dim}, Shape: {real_data.shape}")
+
+    # 🚀 Reinitialize the generator and discriminator with updated data_dim
     generator = Generator(latent_dim, data_dim)
     discriminator = Discriminator(data_dim)
 
-    # Optimizers and Loss
+    # ✔️ Optimizers again with new models
     criterion = nn.BCELoss()
     optimizer_G = optim.Adam(generator.parameters(), lr=lr)
     optimizer_D = optim.Adam(discriminator.parameters(), lr=lr)
-
-    # Example real data (replace with your actual data loader)
-    real_data_np = np.random.normal(0, 1, (1000, data_dim))  # Dummy dataset
-    real_data = torch.tensor(real_data_np, dtype=torch.float)
 
     # Training Loop
     for epoch in range(num_epochs):
@@ -102,3 +132,11 @@ def gan_model():
         z = torch.randn(10, latent_dim)
         synthetic_data = generator(z)
         print("\nSample Synthetic Data:\n", synthetic_data)
+
+    real_values = real_data[:, 0].numpy()  # Example feature
+    fake_values = synthetic_data[:, 0].numpy()
+
+    sns.kdeplot(real_values, label="Real")
+    sns.kdeplot(fake_values, label="Fake")
+    plt.legend()
+    plt.show()

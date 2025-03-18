@@ -1,4 +1,7 @@
 .venv
+.env
+__pycache__
+dist
+data
 docs
 gan.egg-info
-__pycache__
