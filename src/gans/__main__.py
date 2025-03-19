@@ -4,7 +4,7 @@ def data():
     splits()
 
 def main():
-    load_data()
+    load_data(True)
 
 if __name__ == "__main__":
     main()

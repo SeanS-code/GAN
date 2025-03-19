@@ -22,7 +22,7 @@ description = "GAN architecture for non-image datasets"
 
 [project.scripts]
 gans = "gans.__main__:main"
-data = "gans.__main__:data"
+split = "gans.__main__:data"
 
 [project.urls]
 Homepage = "https://github.com/SeanS-code/GAN"
