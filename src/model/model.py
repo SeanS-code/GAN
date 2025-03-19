@@ -23,6 +23,7 @@ lr = 0.0002
 # Data Location
 load_dotenv()
 file_path = os.getenv('CSV_FILE_PATH')
+gan_path = os.getenv('GAN_FILE_PATH')
 
 # Generator
 class Generator(nn.Module):
@@ -135,6 +136,17 @@ def gan_model():
 
     real_values = real_data[:, 0].numpy()  # Example feature
     fake_values = synthetic_data[:, 0].numpy()
+
+    # Convert to DataFrame and save
+    synthetic_df = pd.DataFrame(synthetic_data.numpy(), columns=df.columns)
+
+    # Save synthetic data to CSV
+    synthetic_csv_path = gan_path+'/synthetic_d2_sorted_raw.csv'
+    synthetic_df.to_csv(synthetic_csv_path, index=False)
+
+    print(f"Synthetic data CSV created: {synthetic_csv_path}")
+
+    synthetic_csv_path
 
     sns.kdeplot(real_values, label="Real")
     sns.kdeplot(fake_values, label="Fake")
