@@ -24,6 +24,7 @@ lr = 0.0002
 load_dotenv()
 file_path = os.getenv('CSV_FILE_PATH')
 gan_path = os.getenv('GAN_FILE_PATH')
+doc_path = os.getenv('DOCS_FILE_PATH')
 
 # Generator
 class Generator(nn.Module):
@@ -56,9 +57,9 @@ class Discriminator(nn.Module):
     def forward(self, data):
         return self.model(data)
 
-def gan_model():
+def gan_model(data):
     # Data
-    df = pd.read_csv(file_path)
+    df = pd.read_csv(data)
 
     # Drop 'time' column
     df = df.drop(columns=['time'])
@@ -141,14 +142,16 @@ def gan_model():
     synthetic_df = pd.DataFrame(synthetic_data.numpy(), columns=df.columns)
 
     # Save synthetic data to CSV
-    synthetic_csv_path = gan_path+'/synthetic_d2_sorted_raw.csv'
+    synthetic_csv_path = gan_path+"/32-sorted.csv"
     synthetic_df.to_csv(synthetic_csv_path, index=False)
 
-    print(f"Synthetic data CSV created: {synthetic_csv_path}")
+    print(f"Synthetic data CSV created: {data}")
 
     synthetic_csv_path
 
     sns.kdeplot(real_values, label="Real")
     sns.kdeplot(fake_values, label="Fake")
     plt.legend()
-    plt.show()
+    plt.title(data)
+
+    plt.savefig(os.path.join(doc_path+"/graphs", "figs.png"))

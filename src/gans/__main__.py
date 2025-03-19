@@ -1,11 +1,10 @@
-from model.model import gan_model
-from gans.data import splits
+from gans.data import splits, load_data
 
 def data():
     splits()
 
 def main():
-    gan_model()
+    load_data()
 
 if __name__ == "__main__":
     main()
