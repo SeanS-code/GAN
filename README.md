@@ -1,6 +1,6 @@
 # Generative Adversarial Network (GAN)
 
-Exploring the GAN achitecture on non-image data
+Exploring the GAN achitecture on non-image data and apply their generative properties to provide synthetic data to incomplete datsets
 
 ## Prerequisites
 
@@ -9,10 +9,12 @@ Exploring the GAN achitecture on non-image data
 - Pandas
 - Numpy
 
-### Datasets
-
----
-
 ## Usage
 
 --- 
+
+### Datasets
+
+Personal/Self (Raspberry Pi Sensors)
+Amazon Sales
+MovieLens

@@ -20,7 +20,7 @@ batch_size = 64
 num_epochs = 5000
 lr = 0.0002
 
-# Data Location
+# Self - Data Location
 load_dotenv()
 file_path = os.getenv('CSV_FILE_PATH')
 gan_path = os.getenv('GAN_FILE_PATH')

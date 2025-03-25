@@ -1,4 +1,5 @@
-from gans.data import splits, load_data
+from gans.self_data import splits, load_data
+from model.model import gan_model
 
 def data():
     splits()
